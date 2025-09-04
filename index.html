@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #ff7043;
+      color: white;
+      padding: 20px;
+    }
+    input {
+      width: 60%;
+      padding: 10px;
+      margin: 20px 0;
+      border: 2px solid #ff7043;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      background: #ff7043;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    .recipes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .recipe-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    }
+    .recipe-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    h3 {
+      margin: 10px 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍲 Recipe Finder</h1>
+    <p>Find recipes by typing an ingredient</p>
+    <input type="text" id="searchInput" placeholder="Enter ingredient (e.g. chicken)">
+    <button onclick="searchRecipes()">Search</button>
+  </header>
+
+  <section class="recipes" id="recipes"></section>
+
+  <script>
+    // Dummy recipes (you can connect API later)
+    const recipesData = [
+      { name: "Chicken Curry", img: "https://www.themealdb.com/images/media/meals/1525873040.jpg", ingredients: ["chicken", "spices", "onion"] },
+      { name: "Veggie Pasta", img: "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg", ingredients: ["pasta", "tomato", "vegetables"] },
+      { name: "Pancakes", img: "https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg", ingredients: ["flour", "milk", "egg"] },
+      { name: "Grilled Fish", img: "https://www.themealdb.com/images/media/meals/1520084413.jpg", ingredients: ["fish", "lemon", "spices"] }
+    ];
+
+    function searchRecipes() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const results = recipesData.filter(recipe =>
+        recipe.ingredients.some(ing => ing.includes(query))
+      );
+
+      displayRecipes(results);
+    }
+
+    function displayRecipes(recipes) {
+      const container = document.getElementById("recipes");
+      container.innerHTML = "";
+
+      if (recipes.length === 0) {
+        container.innerHTML = "<p>No recipes found.</p>";
+        return;
+      }
+
+      recipes.forEach(recipe => {
+        const card = `
+          <div class="recipe-card">
+            <img src="${recipe.img}" alt="${recipe.name}">
+            <h3>${recipe.name}</h3>
+            <p>Ingredients: ${recipe.ingredients.join(", ")}</p>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+  </script>
+</body>
+</html>
